@@ -87,7 +87,7 @@ export const EditRow: FC<EditRowProps> = (props) => {
     >
       {/* 拖拽手柄 */}
       {!disableRowDrag && rowData && (
-        <div ref={dragHandleRef} className={prefix('edit-row-drag-handle')} onMouseDown={handleDragHandleMouseDown} title="拖拽调整行顺序">
+        <div ref={dragHandleRef} className={prefix('edit-row-drag-handle')} onMouseDown={handleDragHandleMouseDown} title="Drag and drop to adjust row order">
           ⋮⋮
         </div>
       )}

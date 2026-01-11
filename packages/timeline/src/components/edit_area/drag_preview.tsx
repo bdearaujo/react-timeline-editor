@@ -48,7 +48,7 @@ export const DragPreview: FC<DragPreviewProps> = ({
           fontWeight: 'bold',
         }}
       >
-        拖拽中...
+        Dragging...
       </div>
     </div>
   );

@@ -63,6 +63,8 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
   private _actionMap: Record<string, TimelineAction> = {};
   /** 按动作开始时间正序排列后的动作id数组 */
   private _actionSortIds: string[] = [];
+  /** Row index to row data mapping */
+  rowIndexMap: Record<number, TimelineRow> = {};
 
   /** 当前遍历到的action index */
   private _next: number = 0;
@@ -331,6 +333,12 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
 
   /** 处理数据 */
   private _dealData(data: TimelineRow[]) {
+    const rowIndexMap: Record<number, TimelineRow> = {};
+    data.forEach((row, index) => {
+      rowIndexMap[index] = row;
+    });
+    this.rowIndexMap = rowIndexMap;
+
     const actions: TimelineAction[] = [];
     data.map((row) => {
       actions.push(...row.actions);
