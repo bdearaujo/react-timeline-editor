@@ -1,3 +1,20 @@
+# Revisited version
+Minor edits to support moving rows and change z-index of actions when drawing row.
+
+To be used locally in alternative to `npm install @xzdarcy/react-timeline-editor`.
+
+```bash
+yarn build
+cd packages/engine 
+npm link
+cd ../timeline
+npm link
+cd my_project_using_modified_library
+npm link @xzdarcy/timeline-engine @xzdarcy/react-timeline-editor --save 
+npm install
+npm run dev
+```
+
 # React Timeline Editor
 [![npm version](https://img.shields.io/npm/v/@xzdarcy/react-timeline-editor.svg?style=flat-square)](https://www.npmjs.com/package/@xzdarcy/react-timeline-editor)
 [![npm downloads](https://img.shields.io/npm/dm/@xzdarcy/react-timeline-editor.svg?style=flat-square)](https://www.npmjs.com/package/@xzdarcy/react-timeline-editor)
