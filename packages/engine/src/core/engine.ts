@@ -88,6 +88,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
     this._dealData(data);
     this._dealClear();
     this._dealEnter(this._currentTime);
+    this.trigger('afterSetData', { engine: this });
   }
 
   /**
