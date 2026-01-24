@@ -15,6 +15,8 @@ export interface EffectSourceParam {
   time: number,
   /** 是否正在运行 */
   isPlaying: boolean,
+  /** Whether to mute */
+  isMuted: boolean,
   /** 动作 */
   action: TimelineAction,
   /** 动作效果 */

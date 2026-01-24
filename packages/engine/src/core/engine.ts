@@ -10,6 +10,7 @@ type PlayState = 'playing' | 'paused';
 export interface ITimelineEngine extends Emitter<EventTypes> {
   readonly isPlaying: boolean;
   readonly isPaused: boolean;
+  readonly isMuted: boolean;
   effects: Record<string, TimelineEffect>;
   data: TimelineRow[];
   /** 设置播放速率 */
@@ -31,6 +32,10 @@ export interface ITimelineEngine extends Emitter<EventTypes> {
   }): boolean;
   /** 暂停 */
   pause(): void;
+  /** mute */
+  mute(): void;
+  /** Unmute */
+  unmute(): void;
 }
 
 /**
@@ -54,6 +59,8 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
   private _currentTime: number = 0;
   /** 播放状态 */
   private _playState: PlayState = 'paused';
+  /** Whether to mute */
+  private _isMuted: boolean = false;
   /** 时间帧pre数据 */
   private _prev: number = 0;
 
@@ -79,7 +86,10 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
   get isPaused() {
     return this._playState === 'paused';
   }
-
+  /** Whether to mute */
+  get isMuted() {
+    return this._isMuted;
+  }
   set effects(effects: Record<string, TimelineEffect>) {
     this._effectMap = effects;
   }
@@ -202,6 +212,18 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
     this._timerId && cancelAnimationFrame(this._timerId);
   }
 
+  mute(): void {
+    this._isMuted = true;
+    this.trigger('muted', { engine: this });
+    // changes are only propagated on next tick i.e not update called here since only impact playback
+  }
+
+  unmute(): void {
+    this._isMuted = false;
+    this.trigger('unmuted', { engine: this });
+    // changes are only propagated on next tick i.e not update called here since only impact playback
+  }
+
   /** 播放完成 */
   private _end() {
     this.pause();
@@ -215,9 +237,9 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
       const effect = this._effectMap[action?.effectId];
 
       if (type === 'start') {
-        effect?.source?.start && effect.source.start({ action, effect, engine: this, isPlaying: this.isPlaying, time: this.getTime() });
+        effect?.source?.start && effect.source.start({ action, effect, engine: this, isPlaying: this.isPlaying, isMuted: this.isMuted, time: this.getTime() });
       } else if (type === 'stop') {
-        effect?.source?.stop && effect.source.stop({ action, effect, engine: this, isPlaying: this.isPlaying, time: this.getTime() });
+        effect?.source?.stop && effect.source.stop({ action, effect, engine: this, isPlaying: this.isPlaying, isMuted: this.isMuted, time: this.getTime() });
       }
     }
   }
@@ -266,7 +288,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
       const action = this._actionMap[actionId];
       const effect = this._effectMap[action.effectId];
       if (effect && effect.source?.update) {
-        effect.source.update({ time, action, isPlaying: this.isPlaying, effect, engine: this });
+        effect.source.update({ time, action, isPlaying: this.isPlaying, isMuted: this.isMuted, effect, engine: this });
       }
     }
   }
@@ -279,7 +301,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
 
       const effect = this._effectMap[action?.effectId];
       if (effect?.source?.leave) {
-        effect.source.leave({ action, effect, engine: this, isPlaying: this.isPlaying, time: this.getTime() });
+        effect.source.leave({ action, effect, engine: this, isPlaying: this.isPlaying, isMuted: this.isMuted, time: this.getTime() });
       }
     }
     this._next = 0;
@@ -300,7 +322,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
         if (action.end > time && !this._activeActionIds.includes(actionId)) {
           const effect = this._effectMap[action.effectId];
           if (effect && effect.source?.enter) {
-            effect.source.enter({ action, effect, isPlaying: this.isPlaying, time, engine: this });
+            effect.source.enter({ action, effect, isPlaying: this.isPlaying, isMuted: this.isMuted, time, engine: this });
           }
 
           this._activeActionIds.push(actionId);
@@ -322,7 +344,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
         const effect = this._effectMap[action.effectId];
 
         if (effect && effect.source?.leave) {
-          effect.source.leave({ action, effect, isPlaying: this.isPlaying, time, engine: this });
+          effect.source.leave({ action, effect, isPlaying: this.isPlaying,  isMuted: this.isMuted, time, engine: this });
         }
 
         this._activeActionIds.splice(i, 1);

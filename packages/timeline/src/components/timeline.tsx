@@ -139,6 +139,9 @@ export const Timeline = React.forwardRef<TimelineState, TimelineEditor>((props, 
     get isPaused() {
       return engineRef.current.isPaused;
     },
+    get isMuted() {
+      return engineRef.current.isMuted;
+    },
     setPlayRate: engineRef.current.setPlayRate.bind(engineRef.current),
     getPlayRate: engineRef.current.getPlayRate.bind(engineRef.current),
     setTime: (time: number) => handleSetCursor({ time }),
@@ -146,6 +149,8 @@ export const Timeline = React.forwardRef<TimelineState, TimelineEditor>((props, 
     reRender: engineRef.current.reRender.bind(engineRef.current),
     play: (param: Parameters<TimelineState['play']>[0]) => engineRef.current.play({ ...param }),
     pause: engineRef.current.pause.bind(engineRef.current),
+    mute: engineRef.current.mute.bind(engineRef.current),
+    unmute: engineRef.current.unmute.bind(engineRef.current),
     setScrollLeft: (val) => {
       scrollSync.current && scrollSync.current.setState({ scrollLeft: Math.max(val, 0) });
     },

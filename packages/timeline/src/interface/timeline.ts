@@ -225,6 +225,8 @@ export interface TimelineState {
   isPlaying: boolean;
   /** 是否暂停中 */
   isPaused: boolean;
+  /** Whether to mute */
+  isMuted: boolean;
   /** 设置当前播放时间 */
   setTime: (time: number) => void;
   /** 获取当前播放时间 */
@@ -246,6 +248,10 @@ export interface TimelineState {
   }) => boolean;
   /** 暂停 */
   pause: () => void;
+  /* mute */
+  mute: () => void;
+  /** unmute */
+  unmute: () => void;
   /** 设置scroll left */
   setScrollLeft: (val: number) => void;
   /** 设置scroll top */

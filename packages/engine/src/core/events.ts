@@ -15,6 +15,8 @@ export class Events {
       play: [],
       paused: [],
       ended: [],
+      muted: [],
+      unmuted: [],
       ...handlers,
     };
   }
@@ -76,4 +78,16 @@ export interface EventTypes {
    * @memberof EventTypes
    */
   afterSetData: { engine: TimelineEngine };
+  /**
+   * mute
+   * @type {{ engine: TimelineEngine }} 
+   * @memberof EventTypes
+   */
+  muted: { engine: TimelineEngine };
+  /**
+   * Unmute
+   * @type {{ engine: TimelineEngine }}
+   * @memberof EventTypes
+   */
+  unmuted: { engine: TimelineEngine };
 }
