@@ -11,6 +11,7 @@ export class Events {
       beforeSetPlayRate: [],
       afterSetPlayRate: [],
       setActiveActionIds: [],
+      beforeSetData: [],
       afterSetData: [],
       play: [],
       paused: [],
@@ -72,6 +73,12 @@ export interface EventTypes {
    * @memberof EventTypes
    */
   ended: { engine: TimelineEngine };
+    /**
+   * After setting data
+   * @type {{ engine: TimelineEngine }}
+   * @memberof EventTypes
+   */
+  beforeSetData: { engine: TimelineEngine };
   /**
    * After setting data
    * @type {{ engine: TimelineEngine }}

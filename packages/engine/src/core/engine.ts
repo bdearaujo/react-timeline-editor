@@ -95,6 +95,7 @@ export class TimelineEngine extends Emitter<EventTypes> implements ITimelineEngi
   }
   set data(data: TimelineRow[]) {
     if (this.isPlaying) this.pause();
+    this.trigger('beforeSetData', { engine: this });
     this._dealData(data);
     this._dealClear();
     this._dealEnter(this._currentTime);
