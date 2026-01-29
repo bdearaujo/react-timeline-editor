@@ -26,6 +26,9 @@ export interface TimelineAction {
   minStart?: number;
   /** 动作最大结束时间限制 */
   maxEnd?: number;
+
+  /** Action maximum duration time limit */
+  maxDuration?: number;
 }
 
 /**

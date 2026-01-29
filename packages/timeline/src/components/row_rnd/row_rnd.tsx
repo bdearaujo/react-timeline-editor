@@ -19,6 +19,7 @@ export const RowDnd = React.forwardRef<RowRndApi, RowRndProps>(
       bounds = {
         left: Number.MIN_SAFE_INTEGER,
         right: Number.MAX_SAFE_INTEGER,
+        width: Number.MAX_SAFE_INTEGER,
       },
       enableResizing = true,
       enableDragging = true,
@@ -221,6 +222,8 @@ export const RowDnd = React.forwardRef<RowRndApi, RowRndProps>(
           // 控制bounds
           const tempRight = preLeft + preWidth;
           if (curLeft < bounds.left) curLeft = bounds.left;
+          else if (tempRight - curLeft > bounds.width) 
+            curLeft = tempRight - bounds.width;
           const curWidth = tempRight - curLeft;
 
           if (onResize) {
@@ -267,6 +270,7 @@ export const RowDnd = React.forwardRef<RowRndApi, RowRndProps>(
 
           // 控制bounds
           if (preLeft + curWidth > bounds.right) curWidth = bounds.right - preLeft;
+          else if (curWidth > bounds.width) curWidth = bounds.width;
 
           if (onResize) {
             const ret = onResize('right', {

@@ -37,7 +37,7 @@ export interface RowRndProps {
   left?: number;
   grid?: number;
   start?: number;
-  bounds?: { left: number; right: number };
+  bounds?: { left: number; right: number, width: number };
   edges?: {left: boolean | string, right: boolean | string};
 
   onResizeStart?: RndResizeStartCallback;

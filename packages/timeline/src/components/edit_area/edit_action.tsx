@@ -56,7 +56,7 @@ export const EditAction: FC<EditActionProps> = ({
 }) => {
   const rowRnd = useRef<RowRndApi>(null);
   const isDragWhenClick = useRef(false);
-  const { id, maxEnd, minStart, end, start, selected, flexible = true, movable = true, effectId } = action;
+  const { id, maxDuration, maxEnd, minStart, end, start, selected, flexible = true, movable = true, effectId } = action;
 
   // 获取最大/最小 像素范围
   const leftLimit = parserTimeToPixel(minStart || 0, {
@@ -72,6 +72,7 @@ export const EditAction: FC<EditActionProps> = ({
       scaleWidth,
     }),
   );
+  const widthLimit = (maxDuration || Number.MAX_VALUE) * (scaleWidth / scale);
 
   // 初始化动作坐标数据
   const [transform, setTransform] = useState(() => {
@@ -194,6 +195,7 @@ export const EditAction: FC<EditActionProps> = ({
       bounds={{
         left: leftLimit,
         right: rightLimit,
+        width: widthLimit,
       }}
       edges={{
         left: !disableDrag && flexible && `.${prefix('action-left-stretch')}`,
